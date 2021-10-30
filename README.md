@@ -10,9 +10,9 @@
 
 ## Использованные источники:
 [Старт Андройд](https://startandroid.ru/ru/courses/architecture-components/27-course/architecture-components/530-urok-6-room-entity.html)
+##
 
-Стадия готовности проекта : ГОТОВ
-
+# Важные моменты 
 ```no-highlight
 БД инициализируется в классе MyApplication
 
@@ -52,5 +52,5 @@ dependencies {
 
 
 ```
-
+# Стадия готовности проекта : ГОТОВ
 
