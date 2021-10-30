@@ -29,7 +29,10 @@ class MyApplication : Application() {
         super.onCreate()
         instance = this
         database = databaseBuilder(this, AppDatabase::class.java, "database")
-            .allowMainThreadQueries() // В этом случае вы не будете получать Exception при работе в UI потоке. Но вы должны понимать, что это плохая практика, и может добавить ощутимых тормозов вашему приложению.
+            .allowMainThreadQueries() /*
+            В этом случае вы не будете получать Exception при работе в UI потоке. 
+            Но вы должны понимать, что это плохая практика, и может добавить ощутимых тормозов вашему приложению.
+            */
             .build()
     }
 }
