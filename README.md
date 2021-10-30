@@ -1,4 +1,21 @@
-# Teaching-project-on-technology-and-others
+Проект обучения технологиям (тестовый)
+--------------------------
+
+# Существующие ветки :
+[CleanRoom](https://github.com/Sguruu/Teaching-project-on-technology-and-others/tree/CleanRoom) 
+```no-highlight
+Содержит тестовый проект с использованием библиотеки Room
+```
+
+
+
+
+
+
+
+## Полезные ссылки:
+[Работа с Narkdown на GitHup](https://github.com/sandino/Markdown-Cheatsheet/blob/master/README.md)
+[Работа с Narkdown статья на внешнем сайте](http://webdesign.ru.net/article/pravila-oformleniya-fayla-readmemd-na-github.html)
 
 Прохождение урока по корутинам
 
@@ -8,7 +25,5 @@
 
 [демо-странице](http://www.markdown-here.com/livedemo.html).
 
-https://github.com/sandino/Markdown-Cheatsheet/blob/master/README.md
 
-http://webdesign.ru.net/article/pravila-oformleniya-fayla-readmemd-na-github.html
 
