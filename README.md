@@ -6,10 +6,10 @@
 2. Приложение читает данные с БД
 3. Приложение редактирует данные с БД 
 
+[Быстрый переход к коду проекта](https://github.com/Sguruu/Teaching-project-on-technology-and-others/tree/CleanRoom/app/src/main/java/com/example/roomstudy)
+
 ## Использованные источники:
 [Старт Андройд](https://startandroid.ru/ru/courses/architecture-components/27-course/architecture-components/530-urok-6-room-entity.html)
-
-[Быстрый переход к коду проекта](https://github.com/Sguruu/Teaching-project-on-technology-and-others/tree/CleanRoom/app/src/main/java/com/example/roomstudy)
 
 Стадия готовности проекта : ГОТОВ
 
