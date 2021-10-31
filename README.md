@@ -11,6 +11,7 @@
 
 ## Использованные источники:
 [Старт Андройд](https://startandroid.ru/ru/courses/architecture-components/27-course/architecture-components/530-urok-6-room-entity.html)
+[Документация Андройд](https://developer.android.com/training/data-storage/room)
 ##
 
 # Важные моменты 
