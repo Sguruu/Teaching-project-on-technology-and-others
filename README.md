@@ -14,7 +14,7 @@
 ##
 
 # Важные моменты 
-```no-highlight
+```kotlin
 БД инициализируется в классе MyApplication
 
 class MyApplication : Application() {
@@ -54,7 +54,7 @@ dependencies {
 
 ```
 # [Стоит обрать внимание на переход между активностями и использования флагов](https://github.com/Sguruu/Teaching-project-on-technology-and-others/blob/CleanRoom/app/src/main/java/com/example/roomstudy/MainActivity.kt)
-```no-highlight
+```kotlin
 val _intent = Intent(this, MainActivity2::class.java)
         /*
            Установка флага позволяет не пересоздавать активти, а перезапускать ее, что гаранитурет
