@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MyAdapter(
     private val list: MutableList<DataMyAdapter>,
-    private val customClickAdapter: CustomClickAdapter,
+    private val customClickAdapter: CustomClickAdapter? = null,
 ) : RecyclerView.Adapter<MyAdapter.ViewHolderMyAdapter>() {
     class ViewHolderMyAdapter(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -46,10 +46,10 @@ class MyAdapter(
         обновлении списка
          */
         holder.clearButton?.setOnClickListener {
-            customClickAdapter.customClick(0, holder.adapterPosition, list[holder.adapterPosition])
+            customClickAdapter?.customClick(0, holder.adapterPosition, list[holder.adapterPosition])
         }
         holder.editButton?.setOnClickListener {
-            customClickAdapter.customClick(1, holder.adapterPosition, list[position])
+            customClickAdapter?.customClick(1, holder.adapterPosition, list[position])
         }
     }
 
