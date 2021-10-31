@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase
  * В Database классе необходимо описать абстрактные методы для получения Dao объектов,
  * которые вам понадобятся.
  */
-@Database(entities = [EntityPerson::class],version = 2)
+@Database(entities = [EntityPerson::class],version = 1)
 abstract class  AppDatabase : RoomDatabase() {
     abstract fun personDao():PersonDao
 }
