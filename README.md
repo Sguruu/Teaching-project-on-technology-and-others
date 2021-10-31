@@ -5,6 +5,7 @@
 1. Приложение добавляет данные в БД
 2. Приложение читает данные с БД
 3. Приложение редактирует данные с БД 
+4. Удаление с БД
 
 [Быстрый переход к коду проекта](https://github.com/Sguruu/Teaching-project-on-technology-and-others/tree/CleanRoom/app/src/main/java/com/example/roomstudy)
 
