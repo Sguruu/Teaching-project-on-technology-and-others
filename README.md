@@ -1,4 +1,4 @@
-# Изучение БД Room (Version 0.4)
+# Изучение БД Room (Version 1.0)
 
 
 Реализация простого приложения с БД:
@@ -11,10 +11,12 @@
 
 ## Использованные источники:
 [Старт Андройд](https://startandroid.ru/ru/courses/architecture-components/27-course/architecture-components/530-urok-6-room-entity.html)
+
+[Документация Андройд](https://developer.android.com/training/data-storage/room)
 ##
 
 # Важные моменты 
-```no-highlight
+```kotlin
 БД инициализируется в классе MyApplication
 
 class MyApplication : Application() {
@@ -51,6 +53,32 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 }
 
+
+```
+# [Стоит обрать внимание на переход между активностями и использования флагов](https://github.com/Sguruu/Teaching-project-on-technology-and-others/blob/CleanRoom/app/src/main/java/com/example/roomstudy/MainActivity.kt)
+```kotlin
+val _intent = Intent(this, MainActivity2::class.java)
+        /*
+           Установка флага позволяет не пересоздавать активти, а перезапускать ее, что гаранитурет
+           нам наличие одного экземпляра активти. Вместо медота onCreate будет вызваться метод
+           onRestart у активности.
+           FLAG_ACTIVITY_NEW_TASK - новая задача
+           FLAG_ACTIVITY_SINGLE_TOP - один верх
+           FLAG_ACTIVITY_CLEAR_TOP - удалить верх
+           FLAG_ACTIVITY_REORDER_TO_FRONT - переправка действия флага на передний
+           Следующее сочитание флагов создает по одному экземпляру каждой активти.
+           FLAG_ACTIVITY_NEW_TASK
+           FLAG_ACTIVITY_REORDER_TO_FRONT
+           FLAG_ACTIVITY_SINGLE_TOP оставляет только одну активти вверху (вызывает у второй активти
+           onDestroy)
+           FLAG_ACTIVITY_CLEAR_TOP удаляет верхушку и заменяет ее (вызывает у второй активти
+           onDestroy)
+            */
+        _intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+               // Intent.FLAG_ACTIVITY_SINGLE_TOP
+              //  Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+	startActivity(_intent)
 
 ```
 # Стадия готовности проекта : ГОТОВ
