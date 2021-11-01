@@ -55,7 +55,9 @@ dependencies {
 
 
 ```
-# [Стоит обрать внимание на переход между активностями и использования флагов](https://github.com/Sguruu/Teaching-project-on-technology-and-others/blob/CleanRoom/app/src/main/java/com/example/roomstudy/MainActivity.kt)
+# Стоит обрать внимание на переход между активностями и использования флагов
+
+Работает только с API 30 (Android 11)
 ```kotlin
 val _intent = Intent(this, MainActivity2::class.java)
         /*
