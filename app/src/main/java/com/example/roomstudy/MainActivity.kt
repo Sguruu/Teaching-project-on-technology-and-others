@@ -7,7 +7,9 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.example.roomstudy.room.AppDatabase
 import com.example.roomstudy.room.EntityPerson
+import com.example.roomstudy.room.PersonDao
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +20,17 @@ class MainActivity : AppCompatActivity() {
     private val RECEIPT_KEY_PERSON_BOOLEAN = "${RECEIPT_KEY_PERSON}_BOOLEAN"
     private val RECEIPT_KEY_PERSON_ID = "${RECEIPT_KEY_PERSON}_ID"
 
+    private var idPerson: Long = 0
+    private var idBoolean: Boolean = false
+
+    private var database: AppDatabase? = null
+    private var personDAO: PersonDao? = null
+
+    private var age: EditText? = null
+    private var name: EditText? = null
+    private var lastName: EditText? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,52 +38,25 @@ class MainActivity : AppCompatActivity() {
         Log.i("LifeCycle", "MainActivity onCreate")
 
         //принимает данные с MainActivity2
-        val idPerson: Long = intent.getLongExtra(RECEIPT_KEY_PERSON_ID, 0)
-        val idBoolean: Boolean = intent.getBooleanExtra(RECEIPT_KEY_PERSON_BOOLEAN, false)
+        idPerson = intent.getLongExtra(RECEIPT_KEY_PERSON_ID, 0)
+        idBoolean = intent.getBooleanExtra(RECEIPT_KEY_PERSON_BOOLEAN, false)
 
         val textView = findViewById<TextView>(R.id.textView)
-        val name = findViewById<EditText>(R.id.name)
-        val lastName = findViewById<EditText>(R.id.lastName)
-        val age = findViewById<EditText>(R.id.age)
         val save = findViewById<Button>(R.id.save)
         val viewData = findViewById<Button>(R.id.viewData)
 
         val _intent = Intent(this, MainActivity2::class.java)
-        /*
-           Установка флага позволяет не пересоздавать активти, а перезапускать ее, что гаранитурет
-           нам наличие одного экземпляра активти. Вместо медота onCreate будет вызваться метод
-           onRestart у активности.
-           FLAG_ACTIVITY_NEW_TASK - новая задача
-           FLAG_ACTIVITY_SINGLE_TOP - один верх
-           FLAG_ACTIVITY_CLEAR_TOP - удалить верх
-           FLAG_ACTIVITY_REORDER_TO_FRONT - переправка действия флага на передний
-
-           Следующее сочитание флагов создает по одному экземпляру каждой активти.
-           FLAG_ACTIVITY_NEW_TASK
-           FLAG_ACTIVITY_REORDER_TO_FRONT
-
-           FLAG_ACTIVITY_SINGLE_TOP оставляет только одну активти вверху (вызывает у второй активти
-           onDestroy)
-           FLAG_ACTIVITY_CLEAR_TOP удаляет верхушку и заменяет ее (вызывает у второй активти
-           onDestroy)
-            */
-        _intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-               // Intent.FLAG_ACTIVITY_SINGLE_TOP
-              //  Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
 
         //БД
-        val database = MyApplication.instance.database
-        val personDAO = database.personDao()
+        database = MyApplication.instance.database
+        personDAO = database?.personDao()
+
+        age = findViewById(R.id.age)
+        name = findViewById<EditText>(R.id.name)
+        lastName = findViewById<EditText>(R.id.lastName)
 
         //отрисовка данных с другой активти
-        if (idBoolean) {
-            val entityPerson = personDAO.getById(idPerson)
-            name.setText(entityPerson.name.toString())
-            name.setText(entityPerson.name ?: " ")
-            lastName.setText(entityPerson.lastName ?: " ")
-            age.setText(entityPerson.age.toString() ?: " ")
-        }
+        fillingInTheFields()
 
         /*
         Прослушиватели кнопок
@@ -80,39 +66,40 @@ class MainActivity : AppCompatActivity() {
         }
 
         save.setOnClickListener {
-            val ageT = when (age.text.toString()) {
+            val ageT = when (age?.text.toString()) {
                 "" -> null
                 "null" -> null
-                else -> Integer.parseInt(age.text.toString())
+                else -> Integer.parseInt(age?.text.toString())
             }
             when (idBoolean) {
                 false -> {
                     // добавления сотрудника в БД
                     val entityPerson: EntityPerson = EntityPerson(
                         null,
-                        name = name.text.toString(),
-                        lastName = lastName.text.toString(),
+                        name = name?.text.toString(),
+                        lastName = lastName?.text.toString(),
                         ageT
                     )
                     // добавление в БД
-                    personDAO.insert(entityPerson)
+                    personDAO?.insert(entityPerson)
                 }
                 true -> {
                     // обновление базы
                     val entityPerson: EntityPerson = EntityPerson(
                         idPerson,
-                        name = name.text.toString(),
-                        lastName = lastName.text.toString(),
+                        name = name?.text.toString(),
+                        lastName = lastName?.text.toString(),
                         ageT
                     )
-                    personDAO.update(entityPerson)
+                    personDAO?.update(entityPerson)
                 }
             }
             // обнуление полей
-            name.text = null
-            lastName.text = null
-            age.text = null
+            name?.text = null
+            lastName?.text = null
+            age?.text = null
         }
+
     }
 
     override fun onStart() {
@@ -123,6 +110,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Log.i("LifeCycle", "MainActivity onResume")
+        fillingInTheFields()
     }
 
     override fun onPause() {
@@ -137,11 +125,41 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
-        Log.i("LifeCycle", "MainActivity onRestart")
+        Log.i("LifeCycle", "MainActivity onRestart ")
     }
 
     override fun onDestroy() {
         super.onDestroy()
         Log.i("LifeCycle", "MainActivity onDestroy")
+    }
+
+    // принимает данные с MainActivity2
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent != null) {
+            idPerson = intent.getLongExtra(RECEIPT_KEY_PERSON_ID, 0)
+            idBoolean = intent.getBooleanExtra(RECEIPT_KEY_PERSON_BOOLEAN, false)
+        }
+
+    }
+
+    /*
+    Custom fun
+     */
+    // заполнение полей
+    private fun fillingInTheFields() {
+        if (idBoolean) {
+            val entityPerson = personDAO?.getById(idPerson)
+            name?.setText(entityPerson?.name ?: " ")
+            lastName?.setText(entityPerson?.lastName ?: " ")
+            when (entityPerson?.age) {
+                null -> {
+                    age?.setText("")
+                }
+                else -> {
+                    age?.setText(entityPerson.age.toString())
+                }
+            }
+        }
     }
 }

@@ -59,7 +59,6 @@ class MainActivity2 : AppCompatActivity() {
                         intent.putExtra(SEND_KEY_PERSON_ID, obValue.id)
                         intent.putExtra(SEND_KEY_PERSON_BOOLEAN, true)
                         startActivity(intent)
-
                     }
                 }
             }
@@ -70,15 +69,6 @@ class MainActivity2 : AppCompatActivity() {
 
         arrow.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
-            /*
-            Установка флага позволяет не пересоздавать активти, а перезапускать ее, что гаранитурет
-            нам наличие одного экземпляра активти. Вместо медота onCreate будет вызваться метод
-            onRestart у активности.
-             */
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-                    //    Intent.FLAG_ACTIVITY_SINGLE_TOP or
-                    //    Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                    Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             startActivity(intent)
         }
     }
