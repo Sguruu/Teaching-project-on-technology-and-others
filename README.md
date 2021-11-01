@@ -89,6 +89,7 @@ dependencies {
 Разрешение доступа к интернету 
 
 ```  <uses-permission android:name="android.permission.INTERNET" /> ```
+
 ``` <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> ```
 
 Добавления конфигурации безопасности (чтобы можно было общаться по протоколу http)
