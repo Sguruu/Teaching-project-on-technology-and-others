@@ -20,7 +20,7 @@
 
 ## Использованные источники:
 1. [Документация ReactiveX](http://reactivex.io/)
-2. [Interactive diagrams of Rx]b(https://rxmarbles.com/#filter)
+2. [Interactive diagrams of Rx](https://rxmarbles.com/#filter)
 3. [Статья: Справочник по источникам событий в Rx](https://habr.com/ru/company/funcorp/blog/459174/)
 ##
 
@@ -280,7 +280,7 @@ public class RxTransformingTraining {
 }
 
 ```
-RxCombining
+### RxCombining
 ```.java
 package ru.artkorchagin.rxtraining.rx;
 
