@@ -1,4 +1,4 @@
-# Изучение работы с сетью Retrofit + RxJava3 (Version 0.1)
+# Изучение работы с сетью Retrofit + RxJava3 (Version 0.2)
 
 
 Описание:
@@ -8,7 +8,7 @@
 4. Можно удалить список добавленных фильмов (планируется)
 5. Можно редактировать добавленные фильмы (планируется)
 
-[Быстрый переход к коду проекта](url)
+[Быстрый переход к коду проекта](https://github.com/Sguruu/Teaching-project-on-technology-and-others/tree/Retrofit_RxJava_Basic/app/src/main)
 
 ## Использованные источники:
 1. [Android играюче Retrofit](http://developer.alexanderklimov.ru/android/library/retrofit.php)
