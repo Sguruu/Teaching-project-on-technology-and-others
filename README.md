@@ -2,7 +2,7 @@
 
 
 Описание
-1. Build - Реализация 
+1. Build - Реализация паттерна строитель
 
 [Быстрый переход к коду проекта](https://github.com/Sguruu/Teaching-project-on-technology-and-others/tree/TeachingBasicProjects/src/builder)
 
