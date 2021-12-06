@@ -1,19 +1,22 @@
+package builder
+
 /***
  * @property BuilderCar
  * Класс строитель автомобилей, для демонстрации использование шаблона проектирования Builder
+ * @param model модель автомобиля, сделаем его обязательным параметром в Builder.
+ * @param year возраст автомобиля, сделаем его обязательным параметром в Builder.
+ * @param mileage пробег
+ * @param note примечания
  */
 class BuilderCar
     (
-    // модель - обязательный параметр
     val model: ModelCar,
-    // возраст - обязательный параметр
     val year: Int,
-    // пробег
     val mileage: Int,
-    // примечания
     val note: String?
 ) {
 
+    // приватный конструктор для строителя
     private constructor (builder: Builder) : this(builder.model, builder.year, builder.mileage, builder.note)
 
     class Builder(
@@ -25,14 +28,17 @@ class BuilderCar
             private set
         var note: String? = null
 
+        /* Функции для присваивания */
         fun model(model: ModelCar) = apply { this.model = model }
         fun year(year: Int) = apply { this.year = year }
         fun mileage(mileage: Int) = apply { this.mileage = mileage }
         fun note(note: String) = apply { this.note = note }
 
+        // возвращает построенный объект
         fun build() = BuilderCar(this)
     }
 
+    // функция для вывода
     fun outCar() {
         println(
             """
