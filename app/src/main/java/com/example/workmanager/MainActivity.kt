@@ -1,5 +1,6 @@
 package com.example.workmanager
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,12 +11,14 @@ import java.util.concurrent.TimeUnit
 class MainActivity : AppCompatActivity() {
     private val TAG = "workmng"
     private val TAG1 = "workmng1"
+    private val TAG2 = "workmng2"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         //WorkManagerV0()
-        WorkManagerV1()
+        //WorkManagerV1()
+        WorkManagerV2()
 
     }
 
@@ -120,5 +123,90 @@ class MainActivity : AppCompatActivity() {
                 {
                     Log.d(TAG1, "onChanged: ${it.state}")
                 })
+    }
+
+    // Последовательность выполнения задач
+    @SuppressLint("EnqueueWork")
+    private fun WorkManagerV2() {
+
+        val myWorkRequest = OneTimeWorkRequest
+            .Builder(MyWorker2::class.java)
+            .build()
+
+        val myWorkRequest1 = OneTimeWorkRequest
+            .Builder(MyWorker2_1::class.java)
+            .build()
+
+        val myWorkRequest2 = OneTimeWorkRequest
+            .Builder(MyWorker2_2::class.java)
+            .build()
+
+        val myWorkRequest3 = OneTimeWorkRequest
+            .Builder(MyWorker2_3::class.java)
+            .build()
+
+        val myWorkRequest4 = OneTimeWorkRequest
+            .Builder(MyWorker2_4::class.java)
+            .build()
+
+        val myWorkRequest5 = OneTimeWorkRequest
+            .Builder(MyWorker2_5::class.java)
+            .build()
+
+        // Данные задачи запустятся одновременно
+//        WorkManager.getInstance(this)
+//            .enqueue(mutableListOf(myWorkRequest,myWorkRequest1,myWorkRequest2))
+
+        // Последовательный запуск задач
+        WorkManager.getInstance(this)
+            // передаем первую задачу и создаем тем самом последовательность задач
+            .beginWith(myWorkRequest)
+            // передаем следующую задачу
+            .then(myWorkRequest1)
+            .then(myWorkRequest2)
+            .enqueue()
+
+        // Комбинирование
+        WorkManager.getInstance(this)
+            .beginWith(mutableListOf(myWorkRequest, myWorkRequest1))
+            .then(myWorkRequest1)
+            .then(mutableListOf(myWorkRequest2, myWorkRequest1))
+            .enqueue()
+
+        /*
+        Условие - нужно чтобы myWorkRequest1 выполнился после myWorkRequest
+        myWorkRequest3 и myWorkRequest4 выполнился после myWorkRequest2,
+        а myWorkRequest5 выполнился после выполнения прошлых последовательностей
+        */
+        val chain01 = WorkManager.getInstance(this)
+            .beginWith(myWorkRequest)
+            .then(myWorkRequest1)
+
+        val chain34 = WorkManager.getInstance(this)
+            .beginWith(myWorkRequest2)
+            .then(mutableListOf(myWorkRequest3, myWorkRequest4))
+
+        WorkContinuation.combine(mutableListOf(chain01, chain34))
+            .then(myWorkRequest5)
+            .enqueue()
+
+        /*
+        Unique work
+        Мы можем сделать последовательность задач уникальной.
+        Для этого начинаем последовательность методом beginUniqueWork.
+        В качестве режима мы указали REPLACE. Это означает, что,
+        если последовательность с таким именем уже находится в работе, то еще один запуск приведет
+        к тому, что текущая выполняемая последовательность будет остановлена, а новая запущена.
+        Режим ExistingWorkPolicy.KEEP оставит в работе текущую выполняемую последовательность. А новая будет проигнорирована.
+        Режим ExistingWorkPolicy.APPEND запустит новую последовательность после выполнения текущей.
+         */
+        WorkManager.getInstance(this)
+            .beginUniqueWork("work123", ExistingWorkPolicy.REPLACE, myWorkRequest)
+            .then(myWorkRequest1)
+            .enqueue()
+
+
+
+
     }
 }
