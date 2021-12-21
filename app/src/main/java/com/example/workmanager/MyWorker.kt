@@ -35,5 +35,6 @@ Result.retry()
     override fun onStopped() {
         // Вызывается при отмене задачи из кода
         super.onStopped()
+        Log.d(TAG, "onStopped");
     }
 }
