@@ -12,13 +12,16 @@ class MainActivity : AppCompatActivity() {
     private val TAG = "workmng"
     private val TAG1 = "workmng1"
     private val TAG2 = "workmng2"
+    private val TAG3 = "workmng3"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         //WorkManagerV0()
         //WorkManagerV1()
-        WorkManagerV2()
+        // WorkManagerV2()
+        WorkManagerV3()
+
 
     }
 
@@ -204,9 +207,53 @@ class MainActivity : AppCompatActivity() {
             .beginUniqueWork("work123", ExistingWorkPolicy.REPLACE, myWorkRequest)
             .then(myWorkRequest1)
             .enqueue()
+    }
+
+    // Передача и получение данных
+    private fun WorkManagerV3() {
+        /*
+        Входные данные
+        Данные помещаем в объект Data с помощью его билдера.
+        Далее этот объект передаем в метод setInputData билдера WorkRequest.
+        */
+        val myData = Data.Builder()
+            .putString("keyA", "value1")
+            .putInt("keyB", 1)
+            .build()
+
+        val myWorkRequest1 = OneTimeWorkRequest.Builder(MyWorker3::class.java)
+            .setInputData(myData)
+            .build()
+
+//        WorkManager
+//            .getInstance(this)
+//            .enqueue(myWorkRequest1)
 
 
+        // Получение выходных данных
+        // https://developer.android.com/topic/libraries/architecture/workmanager/advanced
+        WorkManager.getInstance(this)
+            .getWorkInfoByIdLiveData(myWorkRequest1.id)
+            .observe(this, { info ->
+                if (info != null && info.state.isFinished){
+                    val myResultString = info.outputData.getString("keyC")
+                    val myResultInt = info.outputData.getInt("keyD",0)
+                    Log.d(TAG3,"Выходные данные myResultString = $myResultString " +
+                            "myResultInt = $myResultInt")
+                }
+            })
 
+        val myWorkRequest2 = OneTimeWorkRequest.Builder(MyWorker3_1::class.java)
+            .build()
+
+        // тут выходные данные из первой задачи должны передаться во вторую
+        WorkManager.getInstance(this)
+            .beginWith(myWorkRequest1)
+            .then(myWorkRequest2)
+            .enqueue()
+
+        // также можно использовать InputMerger для преобразования несколько выходных результатов
+        // в один входной результат, также имеется возможность создания CustomWorkManager
 
     }
 }
