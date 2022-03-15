@@ -93,7 +93,7 @@ dependencies {
 }
 ```
 Класс MyWork, реализация интерфейса Worker
-```.Kotlin
+```.java
 import android.content.Context
 import android.util.Log
 import androidx.work.Worker
