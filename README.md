@@ -1,9 +1,8 @@
-# WorkManager (Version 0.1)
+# WorkManager (Version 0.2)
 
 
 Описание
-1. Пункт
-2. Пункт 
+1. Приложение реализует фоновую работу WorkManager, запускается сразу при запуске приложения, результат выводится в логах.  
 
 [Быстрый переход к коду проекта](https://github.com/Sguruu/Teaching-project-on-technology-and-others/tree/WorkManager/app/src/main/java/com/example/workmanager)
 
@@ -26,8 +25,71 @@
 ##
 
 # Важные моменты 
-```no-highlight
-Тут вставляем способы подключения к проекту и особенности 
+Подключение к проекту 
+```.gradle
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
 
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.example.workmanager"
+        minSdk 26
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    def work_version='2.7.1'
+
+    /* WorkManager */
+    // (Java only)
+    implementation "androidx.work:work-runtime:$work_version"
+
+    // Kotlin + coroutines
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+
+    // optional - RxJava2 support
+    implementation "androidx.work:work-rxjava2:$work_version"
+
+    // optional - GCMNetworkManager support
+    implementation "androidx.work:work-gcm:$work_version"
+
+    // optional - Test helpers
+    androidTestImplementation "androidx.work:work-testing:$work_version"
+
+    // optional - Multiprocess support
+    implementation "androidx.work:work-multiprocess:$work_version"
+}
 ```
-# Стадия готовности проекта : ГОТОВ/ЗАБРОШЕН/В ПРОЦЕССЕ 
+# Стадия готовности проекта : В ПРОЦЕССЕ 
