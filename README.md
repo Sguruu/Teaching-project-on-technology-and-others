@@ -280,5 +280,84 @@ WorkManager.getInstance(this)
         Режим ExistingWorkPolicy.APPEND запустит новую последовательность после выполнения текущей.
          */    
 ```
+# Передача и получение данных
+Передача данных в классе активности
+```.java
+ /*
+        Входные данные
+        Данные помещаем в объект Data с помощью его билдера.
+        Далее этот объект передаем в метод setInputData билдера WorkRequest.
+        */
+        val myData = Data.Builder()
+            .putString("keyA", "value1")
+            .putInt("keyB", 1)
+            .build()
+
+        val myWorkRequest1 = OneTimeWorkRequest.Builder(MyWorker3::class.java)
+            .setInputData(myData)
+            .build()    
+```
+Получение данных в MyWork
+```.java
+class MyWorker3(appContext: Context, workerParams: WorkerParameters) :
+    Worker(appContext, workerParams) {
+    private val TAG = "workmng3"
+    override fun doWork(): Result {
+        Log.d(TAG, "doWork3: start")
+        // когда задача будет запущена, то внутри ее (в MyWorker1.java) мы можем получить эти
+        // входные данные так:
+        val valueA = inputData.getString("keyA")
+        val valueB = inputData.getInt("keyB", 0)
+
+        // Выходные данные, чтобы задача вернула данные, необходимо передать их в метод setOutputData
+        /*
+        А у Data.Builder есть метод putAll(Map<String, Object> values), в который вы можете передать
+        Map, все данные из которого будут помещены в Data.
+        У объекта Data, который хранит данные, есть метод getKeyValueMap, который вернет вам
+        immutable Map, содержащий все данные этого Data.
+        */
+        val output = Data.Builder()
+            .putString("keyC", "value11")
+            .putInt("keyD", 11)
+            .build()
+
+
+        Log.d(TAG, "Получаем данные: valueA $valueA valueB $valueB")
+        Log.d(TAG, "doWork3: end")
+        // тут возвращаем наши данные виесте с output
+        return Result.success(output)
+    }
+
+    override fun onStopped() {
+        super.onStopped()
+        Log.d(TAG, "doWork3: onStopped")
+    }
+}
+```
+Получение выходных данных в классе активности 
+```.java
+WorkManager.getInstance(this)
+            .getWorkInfoByIdLiveData(myWorkRequest1.id)
+            .observe(this, { info ->
+                if (info != null && info.state.isFinished) {
+                    val myResultString = info.outputData.getString("keyC")
+                    val myResultInt = info.outputData.getInt("keyD", 0)
+                    Log.d(TAG3, "Выходные данные myResultString = $myResultString " +
+                            "myResultInt = $myResultInt")
+                }
+            })
+
+        val myWorkRequest2 = OneTimeWorkRequest.Builder(MyWorker3_1::class.java)
+            .build()
+
+        // тут выходные данные из первой задачи должны передаться во вторую
+        WorkManager.getInstance(this)
+            .beginWith(myWorkRequest1)
+            .then(myWorkRequest2)
+            .enqueue()
+
+        // также можно использовать InputMerger для преобразования несколько выходных результатов
+        // в один входной результат, также имеется возможность создания CustomWorkManager
+```
 
 # Стадия готовности проекта : В ПРОЦЕССЕ 
