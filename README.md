@@ -144,7 +144,24 @@ class MyWorker(appContext: Context, workerParams: WorkerParameters) :
             // задача запускается спустя 10 секунд после передачи ее в .enqueue
             .setInitialDelay(10, TimeUnit.SECONDS)
             .build() 
-            ```
-            
+```
+Запуск задачи 
+```.java WorkManager.getInstance(this)
+            .enqueue(myWorkRequest) 
+```
+Отслеживание статуса задачи 
+```.java
+ WorkManager.getInstance(this)
+            .getWorkInfoByIdLiveData(myWorkRequest.id).observe(
+                this,
+                object : Observer<WorkInfo> {
+                    override fun onChanged(t: WorkInfo?) {
+                        // Статус приходить в UI потоке
+                        Log.d(TAG, "onChanged: ${t?.state}")
+                    }
+                }
+            )
+```
+       
 
 # Стадия готовности проекта : В ПРОЦЕССЕ 
