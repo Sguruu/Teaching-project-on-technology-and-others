@@ -93,7 +93,7 @@ dependencies {
 }
 ```
 Класс MyWork, реализация интерфейса Worker
-```.kotlin
+```.java
 import android.content.Context
 import android.util.Log
 import androidx.work.Worker
@@ -133,5 +133,18 @@ class MyWorker(appContext: Context, workerParams: WorkerParameters) :
     }
 }
 ```
+# WorkManager Строитель и параметры объявления 
+Объявление задачи которая будет выполняться один раз
+```.java  val myWorkRequest: OneTimeWorkRequest = OneTimeWorkRequest
+            .Builder(MyWorker::class.java)
+            // добавляем тег нашей задачи
+            // У WorkInfo есть метод getTags,
+            // который вернет все теги, которые присвоены этой задаче.
+            .addTag("myTag")
+            // задача запускается спустя 10 секунд после передачи ее в .enqueue
+            .setInitialDelay(10, TimeUnit.SECONDS)
+            .build() 
+            ```
+            
 
 # Стадия готовности проекта : В ПРОЦЕССЕ 
