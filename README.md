@@ -1,4 +1,4 @@
-# WorkManager (Version 0.2)
+# WorkManager (Version 1.0)
 
 
 Описание
@@ -360,4 +360,4 @@ WorkManager.getInstance(this)
         // в один входной результат, также имеется возможность создания CustomWorkManager
 ```
 
-# Стадия готовности проекта : В ПРОЦЕССЕ 
+# Стадия готовности проекта : ГОТОВ 
