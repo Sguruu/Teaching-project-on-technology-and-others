@@ -17,7 +17,12 @@ class BuilderCar
 ) {
 
     // приватный конструктор для строителя
-    private constructor (builder: Builder) : this(builder.model, builder.year, builder.mileage, builder.note)
+    private constructor (builder: Builder) : this(
+        model = builder.model,
+        year = builder.year,
+        mileage = builder.mileage,
+        note = builder.note
+    )
 
     class Builder(
         var model: ModelCar
