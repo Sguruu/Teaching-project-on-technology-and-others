@@ -13,7 +13,7 @@
 
 # Важные моменты 
 Реализация классов для использования теста 
-```java
+```kotlin
 
 package testfeature
 
@@ -39,6 +39,8 @@ interface ContractTest<T> {
 }
 
 ```
+
+```java
 package testfeature
 
 import java.lang.reflect.Method
@@ -251,7 +253,6 @@ class FeatureTestRun<T>(private val featureClass: ContractTest<T>) {
     }
 
 }
-```java
 
 ```
 # Стадия готовности проекта : ГОТОВ
