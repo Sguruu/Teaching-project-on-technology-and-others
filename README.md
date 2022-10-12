@@ -22,7 +22,7 @@ import testfeature.example.TestExample
 fun main() {
     val featureTestRun = FeatureTestRun(TestExample())
     // тут необходимо передать параметры функции в Array, если их нет поставить null
-    featureTestRun.runTest(null,1_000_000_000)
+    featureTestRun.runTest(testFunctionParameters = { arrayOf("Тестовый текст", false) }, 10)
 }
 
 ```
@@ -51,7 +51,6 @@ interface ContractTest<T> {
      */
     fun initTest()
 }
-
 ```
 
 ```kotlin
@@ -114,6 +113,7 @@ class FeatureTestRun<T>(private val featureClass: ContractTest<T>) {
 
         methodParams.addAll(getMethodParams())
         val method: Method = getMethodCustom(methodParams)
+        println("method.name : ${method.name}")
 
 
         multipleRunMethod(numberRun) {
@@ -182,9 +182,14 @@ class FeatureTestRun<T>(private val featureClass: ContractTest<T>) {
      * @param method тестируемый метод
      */
     private fun runMethod(testFunctionParameters: (() -> Array<*>)?, method: Method) {
+        println("runMethod ${testFunctionParameters?.invoke()}")
         testFunctionParameters?.let {
-            method.invoke(featureClass, *testFunctionParameters.invoke())
-        } ?: method.invoke(featureClass)
+            println("runMethod ${it.invoke().size}")
+            method.invoke(featureClass, *it.invoke())
+        }
+        if (testFunctionParameters == null) {
+            method.invoke(featureClass)
+        }
     }
 
 
@@ -267,6 +272,5 @@ class FeatureTestRun<T>(private val featureClass: ContractTest<T>) {
     }
 
 }
-
 ```
 # Стадия готовности проекта : ГОТОВ
