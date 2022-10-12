@@ -14,7 +14,7 @@ class TestExample : ContractTest<TestExample> {
     }
 
 
-    fun testFun() {
+    fun testFun(a: String, b: Boolean) {
         val mockList = generateModel()
         val finalList = finalList(mockList)
         val readyList = readyList(finalList)
@@ -36,6 +36,8 @@ class TestExample : ContractTest<TestExample> {
         readyList.forEach {
             println(it)
         }
+
+        println("Переменная a $a, переменная b $b")
     }
 
     /**
