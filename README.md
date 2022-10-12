@@ -40,7 +40,7 @@ interface ContractTest<T> {
 
 ```
 
-```java
+```kotlin
 package testfeature
 
 import java.lang.reflect.Method
